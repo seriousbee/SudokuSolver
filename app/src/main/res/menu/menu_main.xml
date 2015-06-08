@@ -1,12 +1,25 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context=".MainActivity">
-    <item android:id="@+id/action_clear"
+    <item android:id="@+id/action_remove"
           android:title="Clear"
-          android:orderInCategory="100"
-          android:showAsAction="never"/>
+          android:orderInCategory="2"
+          android:icon="@raw/clear"
+          android:showAsAction="always"/>
       <item android:id="@+id/action_solve"
             android:title="Solve"
-            android:orderInCategory="100"
-            android:showAsAction="never"/>
+            android:icon="@raw/play"
+            android:orderInCategory="1"
+            android:showAsAction="always"/>
+      <item android:id="@+id/action_visibility"
+            android:title="Hide answers"
+            android:icon="@raw/visible"
+            android:orderInCategory="3"
+            android:showAsAction="always"/>
+
+      <item android:id="@+id/action_clear"
+            android:title="Delete"
+            android:icon="@raw/delete"
+            android:orderInCategory="4"
+            android:showAsAction="always"/>
 </menu>
