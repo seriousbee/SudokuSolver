@@ -1,11 +1,7 @@
 package com.ulluna.sudokusolver;
 
 import android.app.Activity;
-import android.graphics.Canvas;
-import android.graphics.ColorFilter;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,13 +9,12 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 
 public class MainActivity extends Activity {
 
     int[] solvedBoard = new int[81];
-    Board board;
+    SudokuBoard sudokuBoard;
     private final int[] idArray = {
             R.id.button, R.id.button2, R.id.button3, R.id.button4, R.id.button5, R.id.button6, R.id.button7, R.id.button8, R.id.button9, R.id.button10, R.id.button11, R.id.button12, R.id.button13, R.id.button14, R.id.button15, R.id.button16, R.id.button17, R.id.button18, R.id.button19, R.id.button20, R.id.button21, R.id.button22, R.id.button23, R.id.button24, R.id.button25, R.id.button26, R.id.button27, R.id.button28, R.id.button29, R.id.button30, R.id.button31, R.id.button32, R.id.button33, R.id.button34, R.id.button35, R.id.button36, R.id.button37, R.id.button38, R.id.button39, R.id.button40, R.id.button41, R.id.button42, R.id.button43, R.id.button44, R.id.button45, R.id.button46, R.id.button47, R.id.button48, R.id.button49, R.id.button50, R.id.button51, R.id.button52, R.id.button53, R.id.button54, R.id.button55, R.id.button56, R.id.button57, R.id.button58, R.id.button59, R.id.button60, R.id.button61, R.id.button62, R.id.button63, R.id.button64, R.id.button65, R.id.button66, R.id.button67, R.id.button68, R.id.button69, R.id.button70, R.id.button71, R.id.button72, R.id.button73, R.id.button74, R.id.button75, R.id.button76, R.id.button77, R.id.button78, R.id.button79, R.id.button80, R.id.button81};
 
@@ -29,7 +24,7 @@ public class MainActivity extends Activity {
     private Button[] buttons = new Button[81];
     Button pressed;
 
-    ArrayList<Button> givenButtons = new ArrayList();
+    ArrayList<Button> givenButtons = new ArrayList<Button>();
     boolean visibility = true;
     boolean solved = false;
     boolean solvable = true;
@@ -99,11 +94,22 @@ public class MainActivity extends Activity {
         Button button = (Button)findViewById(v.getId());
         if(pressed!=null) {
             pressed.setBackgroundResource(R.drawable.button_enabled);
-        }
+        } //if a user clicks one field and then moves to the other one
+        //the UI should "uncheck" the previous field
+
+        //it only makes sense to change a value of a field if the puzzle
+        //has not been solved yet
         if(!solved)
             button.setBackgroundResource(R.drawable.button_pressed);
+        //save the ID of the pressed button to handle the event of putting in
+        //a number
         pressed = button;
+
+        //if the puzzle is solved, yet the user chose not to display the answers,
+        //the app will show the correct number for the field.
         if(solved && !visibility && solvable){
+            //we have the ID of the button, but we do not know where in the grid
+            //is the button located. We need to find the location in the buttons array
             for (int j = 0; j < buttons.length; j++) {
                 if(pressed.equals(buttons[j])){
                     pressed.setText(String.valueOf(solvedBoard[j]));
@@ -184,12 +190,12 @@ public class MainActivity extends Activity {
             }
             return;
         }
-        board = new Board(getTheValuesString());
-        board.solveBoard();
-        solvable=board.isSolvable();
+        sudokuBoard = new SudokuBoard(getTheValuesString());
+        sudokuBoard.solveBoard();
+        solvable= sudokuBoard.isSolvable();
         solved = true;
         if(solvable) {
-            solvedBoard = board.getValues();
+            solvedBoard = sudokuBoard.getValues();
             if(visibility){
                 for (int i = 0; i < buttons.length; i++) {
                     buttons[i].setText(String.valueOf(solvedBoard[i]));
